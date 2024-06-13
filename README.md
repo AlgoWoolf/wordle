@@ -1,1 +1,1 @@
-# yatzy
+# wordle
