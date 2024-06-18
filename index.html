@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wordle </title>
+    <style>
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #game-board div {
+            width: 60px;
+            height: 60px;
+            border: 2px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            text-transform: uppercase;
+        }
+
+        input, button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wordle </h1>
+    <div id="game-board"></div>
+    <input type="text" id="guess" maxlength="5" autocomplete="off">
+    <button onclick="submitGuess()">Guess</button>
+    <script>
+        const targetWord = "apple";
+        const maxAttempts = 6;
+        let attempts = 0;
+
+        function setupBoard() {
+            for (let i = 0; i < maxAttempts; i++) {
+                for (let j = 0; j < 5; j++) {
+                    const cell = document.createElement('div');
+                    cell.id = `cell-${i}-${j}`;
+                    document.getElementById('game-board').appendChild(cell);
+                }
+            }
+        }
+
+        function submitGuess() {
+            const guess = document.getElementById('guess').value.toLowerCase();
+            if (guess.length !== 5) {
+                alert('Enter a 5 letter word!');
+                return;
+            }
+            if (attempts < maxAttempts) {
+                const row = attempts;
+                for (let i = 0; i < 5; i++) {
+                    const cell = document.getElementById(`cell-${row}-${i}`);
+                    cell.textContent = guess[i];
+                    cell.style.backgroundColor = 'grey'; // Reset the color
+                    if (guess[i] === targetWord[i]) {
+                        cell.style.backgroundColor = 'green';
+                    } else if (targetWord.includes(guess[i])) {
+                        cell.style.backgroundColor = 'yellow';
+                    }
+                }
+                attempts++;
+            } else {
+                alert('Game Over! The word was ' + targetWord);
+            }
+            document.getElementById('guess').value = ''; // Clear input after guess
+        }
+
+        window.onload = setupBoard;
+    </script>
+</body>
+</html>
+
