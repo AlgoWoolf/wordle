@@ -1,0 +1,2 @@
+- Explanation of System Design -
+The game is fully run on one page. It contains three different sections: the title, the game board (where the guesses appear), and the digital keyboard. The gameboard is the largest section as it is the most important. The keyboard is designed to fit with the game board while still being readable. The color palette is muted in order to make the letter hints stand out and easy to understand. The font is simple as it is a simple game, and each letter on the game board is large and bold to indicate that each is very important.
