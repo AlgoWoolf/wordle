@@ -80,7 +80,7 @@ header {
     height: 40px;
     padding: 0 10px;
     cursor: pointer;
-    background-color: rgb(129,131,132);
+    background-color: rgb(65, 68, 70);
     color: rgb(215,218,220);
     flex-grow: 1;
     text-transform: uppercase;
