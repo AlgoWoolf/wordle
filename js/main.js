@@ -4,6 +4,8 @@ var squares = [];
 var word = "";
 var rowIndex = 0;
 var letterIndex = 0;
+var letterToKey = {};
+var letterState = {}
 
 function getRandomItem(array) {
     return array[Math.floor(Math.random() * array.length)];
@@ -17,26 +19,39 @@ function loadData() {
     console.log(word);
 }
 
-function getTileColor(currentWord, index) {
+function setTileColor(currentWord, index) {
     let letter = currentWord[index];
+    let color = "";
+    let newState = 0;
     const isCorrectLetter = word.includes(letter);
 
+    // Find proper key color
     if (!isCorrectLetter) {
-        return "rgb(58, 58, 60)";
+        color = "rgb(39 39 39)";
+        newState = 1;
     }
-
-    const letterInThatPosition = word.charAt(index);
-    const isCorrectPosition = letter === letterInThatPosition;
-
-    if (isCorrectPosition) {
-        return "rgb(83, 141, 78)";
+    else {
+        const letterInThatPosition = word.charAt(index);
+        const isCorrectPosition = letter === letterInThatPosition;
+    
+        if (isCorrectPosition) {
+            color = "rgb(83, 141, 78)";
+            newState = 3;
+        }
+        else {
+            color = "rgb(181, 159, 59)";
+            newState = 2;
+        }
     }
+    
+    // Update color of square
+    squares[rowIndex + index].style.backgroundColor = color;
 
-    return "rgb(181, 159, 59)";
-}
-
-function setTileColor(currentWord, letterIndex) {
-    squares[letterIndex + rowIndex].style.backgroundColor = getTileColor(currentWord, letterIndex);
+    // Update state of key if it's been changed (e.g. yellow to green)
+    if(letterState[letter] < newState) {
+        letterState[letter] = newState;
+        letterToKey[letter].style.backgroundColor = color;
+    }
 }
 
 function getCurrentWord () {
@@ -61,17 +76,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const keys = document.querySelectorAll(".keyboard-row button");
     keys.forEach(key => {
+        letterToKey[key.innerHTML] = key;
+        letterState[key.innerHTML] = 0;
         key.addEventListener("click", () => {
             let letter = key.innerHTML;
             
+            // Erase current letter
             if(letter == "Del") {
                 if(letterIndex == 0) return;
 
                 letterIndex--;
                 squares[rowIndex + letterIndex].innerHTML = "";
             }
+
+            // Process row if it's full
             else if(letter == "Enter") {
-                if(letterIndex != 5) return;
+                if(letterIndex != 5 || rowIndex >= 30) return;
                 
                 let currentWord = getCurrentWord();
 
@@ -84,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                // Onto next guess
+                // Update colors from guess
                 for(let i = 0; i < 5; i++) {
                     setTileColor(currentWord, i);
                 }
@@ -95,7 +115,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 letterIndex = 0;
                 rowIndex += 5;
-            } 
+            }
+
+            // Add letter to row
             else {
                 if(letterIndex == 5) return;
                 
