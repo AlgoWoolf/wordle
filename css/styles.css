@@ -8,6 +8,7 @@ body {
     height: 100%;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     background: black;
+    color: gainsboro;
 }
 
 #container {
@@ -97,4 +98,17 @@ header {
 .spacer-half{
     flew-grow: 0.5;
 
+}
+
+.title-2 {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0.4em 0 0.4em 0;
+    text-align: center;
+    border-bottom: 1px solid rgb(58,58,60);
+}
+
+#leaderboard-entries {
+    font-size: 1em;
+    margin: 0.4em 0 0.4em 0;
 }
