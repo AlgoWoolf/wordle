@@ -6,6 +6,7 @@ var rowIndex = 0;
 var letterIndex = 0;
 var letterToKey = {};
 var letterState = {}
+var guesses = 1;
 
 function getRandomItem(array) {
     return array[Math.floor(Math.random() * array.length)];
@@ -65,6 +66,11 @@ function getCurrentWord () {
 document.addEventListener("DOMContentLoaded", () => {
 
     const gameBoard = document.getElementById("board");
+
+    var lb = new Leaderboard();
+    lb.add("Joe", 3);
+    lb.display();
+
     for(let i = 0; i < 30; i++)
     {
         let square = document.createElement("div");
@@ -109,8 +115,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     setTileColor(currentWord, i);
                 }
 
-                if(currentWord == word) {
-                    alert("You win!");
+                if (currentWord == word) {
+                    let name = prompt("You won in " + guesses + " guesses! Enter your name:", "Anonymous");
+                    if (name == null || name == "") {
+                        alert("Please enter a valid name for it to be displayed on the leaderboard!");
+                    } else {
+                        lb.add(name, guesses);
+                        lb.display();
+                    }
+                } else {
+                    guesses++;
+                    if (guesses > 6) {
+                        alert("Out of guesses, you lose!")
+                    }
                 }
 
                 letterIndex = 0;
