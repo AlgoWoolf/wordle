@@ -14,7 +14,7 @@ $data = json_decode($rawData, true);
 $word = $data['guess'];
 $targetWord = $_SESSION['game']['target_word'];
 
-$validWords = array_flip(file("valid-wordle-words.txt", FILE_IGNORE_NEW_LINES));
+$validWords = array_flip(file("text/valid-wordle-words.txt", FILE_IGNORE_NEW_LINES));
 
 
 if(!isset($validWords[$word])) {

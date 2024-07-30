@@ -96,7 +96,7 @@ function sendScoreName (guessCount) {
     let params = new URLSearchParams();
     params.append('name', name);
 
-    fetch('./send_leaderboard_name.php', {
+    fetch('./src/send_leaderboard_name.php', {
         method: 'POST',
         body: params,
         headers: {
@@ -111,7 +111,7 @@ function sendScoreName (guessCount) {
 }
 
 function updateScore (score) {
-    fetch('./get_leaderboard.php')
+    fetch('./src/get_leaderboard.php')
     .then(response => response.text())
     .then(data => {
         document.getElementById("leaderboard-entries").innerText = data;
@@ -125,7 +125,7 @@ function updateScore (score) {
 function sendGuess() {
     let guess = getCurrentWord();
 
-    fetch("./try_word.php", {
+    fetch("./src/try_word.php", {
         method: 'post',
         body: JSON.stringify({
             'guess': guess

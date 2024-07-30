@@ -10,7 +10,7 @@ $_SESSION['game'] = [
     'did_lose' => false,
 ];
 function generateRandomWord() {
-    $words = file("wordle-answers-alphabetical.txt", FILE_IGNORE_NEW_LINES);
+    $words = file("src/text/wordle-answers-alphabetical.txt", FILE_IGNORE_NEW_LINES);
     $randomIndex = array_rand($words);
     return $words[$randomIndex];
 }
@@ -24,9 +24,9 @@ function generateRandomWord() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wordle Copycat</title>
 
-    <script src="./main.js?v=<?php echo time() ?>"></script>
+    <script src="./src/main.js?v=<?php echo time() ?>"></script>
 
-    <link rel="stylesheet" href="styles.css?v=<?php echo time() ?>">
+    <link rel="stylesheet" href="src/css/styles.css?v=<?php echo time() ?>">
 
 </head>
 <body>
@@ -35,7 +35,7 @@ function generateRandomWord() {
             <header>
                 <h1 class="title">WORDLE</h1>
             </header>
-            <div id="board-container">
+            <div id="board-container"/>
                 <div id="board">
             </div>
             <div id="keyboard-container">
