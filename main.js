@@ -5,6 +5,56 @@ var letterIndex = 0;
 var letterToKey = {};
 var letterState = {}
 
+function selectCurrentSquare () {
+    let index = rowIndex + Math.min(4, letterIndex);
+    for(let i = 0; i < squares.length; i++) {
+        squares[i].disabled = i != index;
+    }
+    squares[index].focus();
+}
+
+function deselectAllSquares () {
+    for(let i = 0; i < squares.length; i++) {
+        squares[i].disabled = false;
+    }
+}
+
+function addLetter (letter) {
+    if(letterIndex == 5) return;
+                
+    squares[rowIndex + letterIndex].value = letter;
+    letterIndex++;
+    selectCurrentSquare();
+}
+
+function removeLetter () {
+    if(letterIndex == 0) return;
+
+    letterIndex--;
+    squares[rowIndex + letterIndex].value = "";
+    selectCurrentSquare();
+}
+
+function onPressEnter () {
+    if(letterIndex != 5 || rowIndex >= 30) return;
+    deselectAllSquares();
+
+    sendGuess();
+}
+
+function selectNextRow () {
+    letterIndex = 0;
+    rowIndex += 5;
+    selectCurrentSquare();
+}
+
+function clearRow () {
+    for(let i = 0; i < 5; i++) {
+        squares[rowIndex + i].value = "";
+    }
+    letterIndex = 0;
+}
+
 
 function setTileColor(type, letter, index) {
 
@@ -35,7 +85,7 @@ function setTileColor(type, letter, index) {
 function getCurrentWord () {
     let currentWord = "";
     for(let i = 0; i < 5; i++) {
-        currentWord += squares[rowIndex + i].innerHTML;
+        currentWord += squares[rowIndex + i].value;
     }
     return currentWord;
 }
@@ -68,6 +118,8 @@ function updateScore (score) {
     })
     .catch(error => console.error('Error:', error));
 }
+
+
 
 
 function sendGuess() {
@@ -103,8 +155,7 @@ function sendGuess() {
                 for(let i = 0; i < data.letters.length; i++) {
                     setTileColor(data.letters[i].type, data.letters[i].value, i);
                 }
-                letterIndex = 0;
-                rowIndex += 5;
+                selectNextRow();
 
                 if(data.didWin) {
                     sendScoreName(data.guessCount);
@@ -114,10 +165,7 @@ function sendGuess() {
                 }
             }
             else {
-                for(let i = 0; i < 5; i++) {
-                    squares[rowIndex + i].innerHTML = "";
-                }
-                letterIndex = 0;
+                clearRow();
                 alert("Invalid word");
                 return;
             }
@@ -129,9 +177,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameBoard = document.getElementById("board");
     for(let i = 0; i < 30; i++)
     {
-        let square = document.createElement("div");
+        let square = document.createElement("input");
+        square.type = "text";
+        square.maxLength = 1;
         square.classList.add("square");
         square.setAttribute ("id", i+1);
+        square.disabled = i != 0;
         gameBoard.appendChild(square);
         squares.push(square);
     }
@@ -145,29 +196,43 @@ document.addEventListener("DOMContentLoaded", () => {
             
             // Erase current letter
             if(letter == "Del") {
-                if(letterIndex == 0) return;
-
-                letterIndex--;
-                squares[rowIndex + letterIndex].innerHTML = "";
+                removeLetter();
             }
 
             // Process row if it's full
             else if(letter == "Enter") {
-                if(letterIndex != 5 || rowIndex >= 30) return;
-                
-                sendGuess();
+                onPressEnter();
             }
 
             // Add letter to row
             else {
-                if(letterIndex == 5) return;
-                
-                squares[rowIndex + letterIndex].innerHTML = letter;
-                letterIndex++;
+                addLetter(letter);
             }
         });
     });
 
+    for (let index = 0; index < squares.length; index++) {
+        let input = squares[index];
+
+        input.addEventListener('input', function() {
+            if (!/^[a-zA-Z]$/.test(this.value)) {
+                this.value = '';
+            } else if (this.value.length === this.maxLength) {
+                addLetter(this.value);
+            }
+        });
+
+        input.addEventListener('keydown', function(event) {
+            if (event.key === "Backspace" && this.value === '' && index > 0) {
+                removeLetter();
+            }
+            if (event.key === "Enter") {
+                onPressEnter();
+            }
+        });
+    }
+
+    selectCurrentSquare();
     updateScore();
 })
 
