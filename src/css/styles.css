@@ -94,12 +94,10 @@ header {
 
 .keyboard-row button.wide-button{
     flex-grow: 1.5;
-
 }
 
 .spacer-half{
-    flew-grow: 0.5;
-
+    flex-grow: 0.5;
 }
 
 .title-2 {
@@ -113,4 +111,25 @@ header {
 #leaderboard-entries {
     font-size: 1em;
     margin: 0.4em 0 0.4em 0;
+}
+
+.row {
+    display: flex;
+    flex-flow: row wrap;
+    column-gap: 10em;
+}
+
+.col {
+    border: 1px solid rgb(58,58,60);
+    border-radius: 5px;
+    padding: 10px;
+    flex: 1;
+}
+
+.login {
+    text-align: center;
+}
+
+.error {
+    color: red;
 }

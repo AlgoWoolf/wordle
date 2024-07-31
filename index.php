@@ -76,22 +76,36 @@ function generateRandomWord() {
                   <button data-key="del" class="wide-button">Del</button>
                 </div>
             </div>
-            <div id="leaderboard">
-                <h3 class="title-2">Leaderboard</h3>
 
-                <div id="leaderboard-entries">
-                    1. N/A (? guesses)<br>
-                    2. N/A (? guesses)<br>
-                    3. N/A (? guesses)<br>
-                    4. N/A (? guesses)<br>
-                    5. N/A (? guesses)<br>
-                    6. N/A (? guesses)<br>
-                    7. N/A (? guesses)<br>
-                    8. N/A (? guesses)<br>
-                    9. N/A (? guesses)<br>
-                    10. N/A (? guesses)<br>
+            <div class="row">
+
+                <div class="col" id="user">
+                    <div id="login">
+                        <?php include("src/form_validate.php") ?>
+                    </div>
+                    <div id="admin-view">
+
+                    </div>
+                </div>
+
+                <div class="col" id="leaderboard">
+                    <h3 class="title-2">Leaderboard</h3>
+
+                    <div id="leaderboard-entries">
+                        1. N/A (? guesses)<br>
+                        2. N/A (? guesses)<br>
+                        3. N/A (? guesses)<br>
+                        4. N/A (? guesses)<br>
+                        5. N/A (? guesses)<br>
+                        6. N/A (? guesses)<br>
+                        7. N/A (? guesses)<br>
+                        8. N/A (? guesses)<br>
+                        9. N/A (? guesses)<br>
+                        10. N/A (? guesses)<br>
+                    </div>
                 </div>
             </div>
+            
         </div>
     </div>
 </body>

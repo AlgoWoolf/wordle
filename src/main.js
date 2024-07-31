@@ -3,7 +3,12 @@ var squares = [];
 var rowIndex = 0;
 var letterIndex = 0;
 var letterToKey = {};
-var letterState = {}
+var letterState = {};
+var currentUser = "";
+var isLoggedIn = (function () {
+    if (currentUser == "") return false
+    else return true
+})();
 
 function selectCurrentSquare () {
     let index = rowIndex + Math.min(4, letterIndex);
@@ -118,9 +123,6 @@ function updateScore (score) {
     })
     .catch(error => console.error('Error:', error));
 }
-
-
-
 
 function sendGuess() {
     let guess = getCurrentWord();
