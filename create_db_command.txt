@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `scores` (
 --
 
 INSERT INTO `users` (`username`, `password`, `is_admin`) VALUES
-  ('admin', 'admin123', 'true');
+  ('admin', 'admin123', 1);
 
 --
 -- Creating data for table `scores`

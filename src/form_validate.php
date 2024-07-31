@@ -4,8 +4,13 @@ $usernameErr = $passwordErr = "";
 $username = $password = "";
 $request = "";
 $caughtErr = false;
+$loggedIn = false;
+$showLogin = true;
+$showUser = $showAdmin = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    global $username, $password;
+
     if (empty($_POST["username"])) {
         $usernameErr = "* required";
         $caughtErr = true;
@@ -26,10 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!$caughtErr){
         if (array_key_exists('login', $_POST)) {
-            echo "Login";
             login();
         } else if (array_key_exists('register', $_POST)) {
-            echo "Register";
             register();
         }
     }
@@ -44,26 +47,45 @@ function test_input($data)
 }
 
 function login(){
+    global $loggedIn;
     if(!userExists()){
-        echo "Login failed, account doesn't exist";
+        echo "Login failed, account doesn't exist or password is wrong";
     }else{
         echo "Login Succesful";
+        $loggedIn = true;
+        updateView();
     }
 }
 
 function register(){
+    global $loggedIn;
     if (userExists()){
         echo "User already exists";
     } else {
-        echo "User does not exist yet, registering";
+        echo "User is being registered";
         addUserToDB();
+        $loggedIn = true;
+        updateView();
+    }
+}
+
+function loggout(){
+    global $username, $password, $loggedIn;
+    if (isset($_POST['loggout'])){
+        $username = $password = "";
+        $loggedIn = false;
+        updateView();
     }
 }
 
 function userExists(){
+    global $username, $password;
+    //echo "now checking if user " . $username . " with password " . $password . " exists. <br>";
     $conn = new mysqli('localhost', 'root', '', 'wordledb');
-    $sql = "SELECT * FROM users WHERE";
+    $sql = "SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password . "'";
+    //echo "SQL: " . $sql . "<br>";
     $result = $conn->query($sql);
+    $conn->close();
 
     if ($result == null){
         return false;
@@ -72,6 +94,8 @@ function userExists(){
 }
 
 function addUserToDB(){
+    global $username, $password;
+
     $conn = new mysqli('localhost', 'root', '', 'wordledb');
     $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES(?, ?)");
     $stmt->bind_param("si", $username, $password);  // "si" denotes string and integer types
@@ -79,20 +103,55 @@ function addUserToDB(){
     $stmt->close();
 }
 
+function updateView(){
+    global $username, $password, $loggedIn, $showLogin, $showAdmin, $showUser;
+    if (!empty($username) && $loggedIn){
+        if ($username == "admin") {
+            $showAdmin = true;
+            $showLogin = $showUser = false;
+        }else{
+            $showUser = true;
+            $showLogin = $showAdmin = false;
+        }
+    } else {
+        $showLogin = true;
+        $showUser = $showAdmin = false;
+    }
+}
+
+updateView();
 ?>
 
-<h3 class="title-2">User Login</h3>
+<div id="login" <?php if ($showLogin === false) { ?>style="display:none"<?php } ?>>
+    <h3 class="title-2">User Login</h3>
 
-<form class="login" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-    <label>Username: </label> <br>
-    <input type="text" name="username" placeholder="Enter Username..." /> <br>
-    <span class="error"><?php echo $usernameErr ?></span><br><br>
+    <form class="login" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+        <label>Username: </label> <br>
+        <input type="text" name="username" placeholder="Enter Username..." /> <br>
+        <span class="error"><?php echo $usernameErr ?></span><br><br>
 
-    <label>Password: </label> <br>
-    <input type="password" name="password" placeholder="Enter Password..." /> <br>
-    <span class="error"><?php echo $passwordErr ?></span> <br><br>
+        <label>Password: </label> <br>
+        <input type="password" name="password" placeholder="Enter Password..." /> <br>
+        <span class="error"><?php echo $passwordErr ?></span> <br><br>
 
-    <button type="submit" name="login">Login</button>
-    <button type="submit" name="register">Register</button>
+        <button type="submit" name="login">Login</button>
+        <button type="submit" name="register">Register</button>
 
-</form>
+    </form>
+</div>
+
+<div id="logged-in-view" <?php if ($loggedIn === false) { ?>style="display:none"<?php } ?>>
+    <div id="user-view" <?php if ($showUser === false) { ?>style="display:none"<?php } ?>>
+        <h3 class="title-2">User</h3>
+    
+    </div>
+
+    <div id="admin-view" <?php if ($showAdmin === false) { ?>style="display:none"<?php } ?>>
+        <h3 class="title-2">Admin</h3>
+
+    </div>
+
+    <form method="post">
+        <button type="submit" name="loggout">Loggout</button>
+    </form>
+</div>
