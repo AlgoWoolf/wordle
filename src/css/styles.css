@@ -133,3 +133,7 @@ header {
 .error {
     color: red;
 }
+
+.user-view{
+    text-align: center;
+}

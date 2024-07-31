@@ -86,8 +86,9 @@ function userExists(){
     //echo "SQL: " . $sql . "<br>";
     $result = $conn->query($sql);
     $conn->close();
+    //echo "result user: " . $result->fetch_assoc()['username'] . "<br>";
 
-    if ($result == null){
+    if (is_null($result->fetch_assoc()['username'])){
         return false;
     }
     return true;
@@ -140,15 +141,16 @@ updateView();
     </form>
 </div>
 
-<div id="logged-in-view" <?php if ($loggedIn === false) { ?>style="display:none"<?php } ?>>
+<div id="logged-in-view" class="user-view" <?php if ($loggedIn === false) { ?>style="display:none"<?php } ?>>
+    <h3 class="title-2">Account</h3>
+    <span>You are logged in as <?php echo $username ?>.</span>
+
     <div id="user-view" <?php if ($showUser === false) { ?>style="display:none"<?php } ?>>
-        <h3 class="title-2">User</h3>
-    
+        user
     </div>
 
     <div id="admin-view" <?php if ($showAdmin === false) { ?>style="display:none"<?php } ?>>
-        <h3 class="title-2">Admin</h3>
-
+        admin
     </div>
 
     <form method="post">

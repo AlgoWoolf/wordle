@@ -80,7 +80,7 @@ function generateRandomWord() {
             <div class="row">
 
                 <div class="col" id="user">
-                    <?php include ("src/form_validate.php") ?>
+                    <?php include ("src/user_manager.php") ?>
                 </div>
 
                 <div class="col" id="leaderboard">
