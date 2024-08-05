@@ -85,18 +85,10 @@ function generateRandomWord() {
 
                 <div class="col" id="leaderboard">
                     <h3 class="title-2">Leaderboard</h3>
+                    <span class="status">(Login or register to save your score!)</span>
 
                     <div id="leaderboard-entries">
-                        1. N/A (? guesses)<br>
-                        2. N/A (? guesses)<br>
-                        3. N/A (? guesses)<br>
-                        4. N/A (? guesses)<br>
-                        5. N/A (? guesses)<br>
-                        6. N/A (? guesses)<br>
-                        7. N/A (? guesses)<br>
-                        8. N/A (? guesses)<br>
-                        9. N/A (? guesses)<br>
-                        10. N/A (? guesses)<br>
+                        Loading...
                     </div>
                 </div>
             </div>

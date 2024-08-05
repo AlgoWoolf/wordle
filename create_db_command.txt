@@ -17,16 +17,22 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Table structure for table `status`
+--
+
+CREATE TABLE IF NOT EXISTS `status` (
+  `username` varchar(100) PRIMARY KEY NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
 -- Table structure for table `scores`
 --
 
 CREATE TABLE IF NOT EXISTS `scores` (
-  `id` int(11) NOT NULL,
+  `id` int(11) PRIMARY KEY NOT NULL,
   `username` varchar(100) NOT NULL,
   `score` int(10) UNSIGNED NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-  PRIMARY KEY (id),
-  FOREIGN KEY (username) REFERENCES users(username)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -37,20 +43,12 @@ INSERT INTO `users` (`username`, `password`, `is_admin`) VALUES
   ('admin', 'admin123', 1);
 
 --
--- Creating data for table `scores`
+-- Initial status setting
 --
 
-INSERT INTO `scores` (`id`, `username`, `score`, `timestamp`) VALUES
-(2, 'Anto & Algo', 1, '2024-07-30 04:41:56'),
-(3, 'Anonymous', 2, '2024-07-30 04:42:21'),
-(4, 'Yes you can ask something', 3, '2024-07-30 04:43:47'),
-(5, 'S', 1, '2024-07-30 04:44:12'),
-(6, 'null', 1, '2024-07-30 05:03:17'),
-(7, 'yipeee', 4, '2024-07-30 05:44:26');
+INSERT INTO `status` (`username`) VALUES
+  ('');
 
---
--- AUTO_INCREMENT for dumped tables
---
 
 --
 -- AUTO_INCREMENT for table `scores`

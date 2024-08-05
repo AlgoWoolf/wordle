@@ -1,8 +1,8 @@
 <?php
 
 $conn = new mysqli('localhost', 'root', '', 'wordledb');
-$stmt = $conn->prepare("DELETE FROM scores");
-$stmt->execute();
+$sql = "DELETE FROM scores";
+$conn->query($sql);
 $conn->close();
 
 ?>

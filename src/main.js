@@ -96,23 +96,37 @@ function getCurrentWord () {
 }
 
 function sendScoreName (guessCount) {
-    let name = prompt("You won in " + guessCount + " guesses! Enter your name:", "Anonymous");
+    let result = "";
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+        let name = this.responseText;
+        //console.log("here: " + result)
 
-    let params = new URLSearchParams();
-    params.append('name', name);
+        if (!(name === "" || name === null)) {
+            alert("Congratulations " + name + "! You won in " + guessCount + " guesses.");
 
-    fetch('./src/send_leaderboard_name.php', {
-        method: 'POST',
-        body: params,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            let params = new URLSearchParams();
+            params.append('name', name);
+
+            fetch('./src/send_leaderboard_name.php', {
+                method: 'POST',
+                body: params,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("leaderboard-entries").innerText = data;
+                })
+                .catch(error => console.error('Error:', error));
+        } else {
+            alert("You won in " + guessCount + " guesses. Login to save your score next time!");
         }
-    })
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById("leaderboard-entries").innerText = data;
-    })
-    .catch(error => console.error('Error:', error));
+    }
+        
+    xhttp.open("GET", "./src/get_status.php", true);
+    xhttp.send();
 }
 
 function updateScore (score) {
@@ -237,6 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
     selectCurrentSquare();
     updateScore();
 })
+
 
 
 

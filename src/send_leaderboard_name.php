@@ -17,7 +17,6 @@ $stmt->bind_param("si", $name, $score);  // "si" denotes string and integer type
 $stmt->execute();
 $stmt->close();
 
-
 $sql = "SELECT username, score FROM scores ORDER BY score ASC, timestamp ASC LIMIT 10";
 $result = $conn->query($sql);
 
